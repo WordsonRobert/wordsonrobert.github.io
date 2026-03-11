@@ -38,8 +38,13 @@ const blackMat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.
 const metalMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.8, roughness: 0.4 });
 
 // Main Stage & Barricade
-scene.add(new THREE.Mesh(new THREE.BoxGeometry(80, 3, 30), blackMat).position.set(0, 1.5, -5));
-scene.add(new THREE.Mesh(new THREE.BoxGeometry(60, 1.5, 0.5), metalMat).position.set(0, 0.75, 9));
+const stagePlatform = new THREE.Mesh(new THREE.BoxGeometry(80, 3, 30), blackMat);
+stagePlatform.position.set(0, 1.5, -5);
+scene.add(stagePlatform);
+
+const barricade = new THREE.Mesh(new THREE.BoxGeometry(60, 1.5, 0.5), metalMat);
+barricade.position.set(0, 0.75, 9);
+scene.add(barricade);
 
 // 2-Story Scaffolding
 const scaffoldGroup = new THREE.Group();
@@ -50,8 +55,13 @@ for(let x = -30; x <= 30; x += 15) {
         const pillar = new THREE.Mesh(pillarGeo, metalMat); pillar.position.set(x, 10, z); scaffoldGroup.add(pillar);
     }
 }
-scaffoldGroup.add(new THREE.Mesh(beamGeo, metalMat).position.set(0, 10, 0));
-scaffoldGroup.add(new THREE.Mesh(beamGeo, metalMat).position.set(0, 20, 0));
+const beam1 = new THREE.Mesh(beamGeo, metalMat);
+beam1.position.set(0, 10, 0);
+scaffoldGroup.add(beam1);
+
+const beam2 = new THREE.Mesh(beamGeo, metalMat);
+beam2.position.set(0, 20, 0);
+scaffoldGroup.add(beam2);
 scaffoldGroup.position.set(0, 3, -15); scene.add(scaffoldGroup);
 
 // White Van
