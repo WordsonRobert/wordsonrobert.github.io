@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORDSON ROBERT // ARCHIVE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Arc-style tab navigation -->
+    <nav id="tab-nav">
+        <div class="tab active" data-tab="cv">HOME</div>
+        <div class="tab" data-tab="movies">FILMS</div>
+        <div class="tab" data-tab="music">MUSIC</div>
+    </nav>
+
+    <!-- Tab content containers -->
+    <div id="tab-content">
+        <!-- CV Tab (loads first) -->
+        <div class="tab-pane active" id="cv-pane">
+            <iframe src="cv.html" frameborder="0"></iframe>
+        </div>
+
+        <!-- Movies Tab -->
+        <div class="tab-pane" id="movies-pane">
+            <iframe src="movies/index.html" frameborder="0"></iframe>
+        </div>
+
+        <!-- Music Tab -->
+        <div class="tab-pane" id="music-pane">
+            <iframe src="music/index.html" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

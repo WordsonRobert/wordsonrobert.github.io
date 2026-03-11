@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rolling Loud Moshpit</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="loading-ui">
+        <h1>LOADING STAGE...</h1>
+        <p id="loading-text">0% (Brace yourself, 300MB incoming)</p>
+    </div>
+    
+    <div id="enter-ui">
+        <h1>CLICK TO ENTER MOSHPIT</h1>
+        <p>Use Mouse to look around. Prepare for chaos.</p>
+    </div>
+
+    <div id="canvas-container"></div>
+    
+    <script type="module" src="script.js"></script>
+</body>
+</html>

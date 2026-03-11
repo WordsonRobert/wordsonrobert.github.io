@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORDSON // ARCHIVE FIELD</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div id="start-screen">
+        <h1>THE ARCHIVE FIELD</h1>
+        <p>WASD to Move // MOUSE to Look // CLICK to Inspect</p>
+        <button class="btn" id="start-btn">INITIALIZE LINK</button>
+    </div>
+
+    <div id="hud">
+        <div class="crosshair" id="crosshair"></div>
+        
+        <div class="top-left">
+            <div class="data-row">SYS.ONLINE</div>
+            <div class="data-row">RENDER: VULKAN_0.9</div>
+            <div class="data-row" id="fps-counter">FPS: 60</div>
+        </div>
+
+        <div class="bottom-left">
+            <div class="data-row" id="pos-display">POS: 0, 0, 0</div>
+            <div class="data-row">SECTOR: NULL</div>
+        </div>
+
+        <div class="bottom-right">
+            <div class="data-row">ENTITIES: 2048</div>
+            <div class="data-row highlight">CHILD_SIGNAL: DETECTED</div>
+        </div>
+
+        <div id="scanner">
+            <h2 id="scan-title">TITLE</h2>
+            <div class="meta" id="scan-meta">YEAR // ID</div>
+        </div>
+    </div>
+
+    <div id="canvas-container"></div>
+    <script type="module" src="script.js"></script>
+</body>
+</html>  

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordson Robert</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #fafafa;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            padding: 80px 40px 60px 40px;
+            color: #1d1d1f;
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        header {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #d2d2d7;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -1.5px;
+            color: #000;
+        }
+        
+        .subtitle {
+            font-size: 1.25rem;
+            color: #6e6e73;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .contact {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            font-size: 0.95rem;
+            color: #6e6e73;
+        }
+        
+        .contact a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .contact a:hover {
+            color: #0077ed;
+        }
+        
+        section {
+            margin-bottom: 55px;
+        }
+        
+        section h2 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #000;
+            letter-spacing: -0.5px;
+        }
+        
+        .item {
+            margin-bottom: 30px;
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+            gap: 15px;
+        }
+        
+        .item-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #000;
+        }
+        
+        .item-date {
+            font-size: 0.9rem;
+            color: #6e6e73;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .item-subtitle {
+            font-size: 1rem;
+            color: #6e6e73;
+            margin-bottom: 8px;
+        }
+        
+        .item-description {
+            font-size: 0.95rem;
+            color: #1d1d1f;
+            line-height: 1.65;
+        }
+        
+        .cgpa {
+            font-weight: 600;
+            color: #0066cc;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 15px 30px;
+        }
+        
+        .skill-label {
+            font-weight: 600;
+            color: #000;
+        }
+        
+        .skill-value {
+            color: #1d1d1f;
+            line-height: 1.65;
+        }
+        
+        .publications-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .publications-list li {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.65;
+            color: #1d1d1f;
+        }
+        
+        .publications-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #0066cc;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .extracurricular {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 15px 30px;
+        }
+        
+        .extra-label {
+            font-weight: 600;
+            color: #000;
+        }
+        
+        .extra-value {
+            color: #1d1d1f;
+            line-height: 1.65;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 60px 25px 40px 25px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .item-header {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .skills-grid,
+            .extracurricular {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Wordson Robert</h1>
+            <p class="subtitle">Department of Mathematics and Statistics<br>Indian Institute of Science Education and Research, Kolkata</p>
+            <div class="contact">
+                <a href="mailto:wr24ms190@iiserkol.ac.in">wr24ms190@iiserkol.ac.in</a>
+                <a href="https://github.com/WordsonRobert" target="_blank">github.com/WordsonRobert</a>
+            </div>
+        </header>
+
+        <section>
+            <h2>Education</h2>
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">BS-MS in Mathematical Sciences</span>
+                    <span class="item-date">August 2024 – Present</span>
+                </div>
+                <p class="item-subtitle">Indian Institute of Science Education and Research, Kolkata</p>
+                <p class="item-description"><span class="cgpa">CGPA: 7.24/10</span></p>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">ISC (Class XII)</span>
+                    <span class="item-date">2023</span>
+                </div>
+                <p class="item-subtitle">Excel Central School, Thiruvattar, Tamil Nadu</p>
+                <p class="item-description">93.6% – Indian School Certificate (ISC)</p>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">NIOS (Class X)</span>
+                    <span class="item-date">2021</span>
+                </div>
+                <p class="item-subtitle">Homeschooled, Chennai</p>
+                <p class="item-description">83.2% – The National Institute of Open Schooling (NIOS)</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Research Interests</h2>
+            <p class="item-description">Functional Analysis in Hilbert Spaces, Computational Methods in Stochastic Processes, Applied Mathematics.</p>
+        </section>
+
+        <section>
+            <h2>Awards and Achievements</h2>
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">Gold Medal in Scholastic Computations</span>
+                    <span class="item-date">2023</span>
+                </div>
+                <p class="item-description">Awarded for securing the highest marks in scholastic computations in Grade XII.</p>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">JEE Advanced Mathematics</span>
+                    <span class="item-date">2023</span>
+                </div>
+                <p class="item-description">Secured 109/120 in the Joint Entrance Examination (JEE) Advanced Mathematics.</p>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">IOQM Qualification</span>
+                    <span class="item-date">2020</span>
+                </div>
+                <p class="item-description">Qualified for the Indian Olympiad Qualifier in Mathematics (IOQM).</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Conferences and Courses</h2>
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">Probability Theory and Stochastic Processes</span>
+                    <span class="item-date">2025</span>
+                </div>
+                <p class="item-description">Completed course from IIT Delhi via NPTEL.</p>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">Abstract Group Theory</span>
+                    <span class="item-date">2025</span>
+                </div>
+                <p class="item-description">Completed course from CMI Chennai via NPTEL.</p>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">FIRE 2025 Conference Presentation</span>
+                    <span class="item-date">December 2025</span>
+                </div>
+                <p class="item-subtitle">IIT (BHU) Varanasi, India</p>
+                <p class="item-description">Presented "Transformer-Driven Word-Level Classification of Dravidian Languages" at CoLI-Dravidian Task, Forum for Information Retrieval Evaluation (FIRE) 2025.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Projects</h2>
+            
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">Graph-Based Violence Detection in CCTV Surveillance</span>
+                    <span class="item-date">Dec 2025 – Present</span>
+                </div>
+                <p class="item-subtitle">Supervisor: Prof. Maasilamani, IIIT Design and Manufacturing Kancheepuram</p>
+                <p class="item-description">Developed spatiotemporal graph neural network architecture combining GAT and LSTM for real-time violence detection. Achieved 79% accuracy with 80% recall on held-out test data. Designed graph-based scene representation with 7-dimensional node features. Currently integrating RAG memory system for explainable predictions.</p>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">Context-Aware Image Quality Assessment for CCTV</span>
+                    <span class="item-date">Dec 2024 – Present</span>
+                </div>
+                <p class="item-subtitle">Supervisor: Prof. Maasilamani, IIIT Design and Manufacturing Kancheepuram</p>
+                <p class="item-description">Developing RAG-based framework for image quality assessment in surveillance systems. Designed vector-based memory bank architecture using FAISS for efficient retrieval. Integrating context-aware scoring mechanism with explainable output generation.</p>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">Automated Beach Sediment Analysis</span>
+                    <span class="item-date">Sep 2025 – Present</span>
+                </div>
+                <p class="item-subtitle">Ministry of Earth Sciences (MoES) – Smart India Hackathon 2025</p>
+                <p class="item-description">Developing low-cost camera-based remote sensing system for automated beach type classification through sediment grain size analysis. Implementing computer vision pipeline integrated with GNSS/GPS receivers.</p>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">Political Sentiment Analysis of Tamil X Comments</span>
+                    <span class="item-date">Dec 2025 – Present</span>
+                </div>
+                <p class="item-subtitle">DravidianLangTech-2026 Shared Task</p>
+                <p class="item-description">Developed multilingual BERT-based classifiers for fine-grained sentiment detection on code-mixed Tamil social media data, achieving 85% F1-score via cross-lingual transfer and data augmentation.</p>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">Prompt Recovery for LLMs in Telugu</span>
+                    <span class="item-date">Dec 2025 – Present</span>
+                </div>
+                <p class="item-subtitle">DravidianLangTech-2026 Shared Task</p>
+                <p class="item-description">Implemented inversion attacks on Telugu-tuned LLMs using gradient-based optimization to recover hidden prompts, improving reconstruction accuracy by 12% with adversarial fine-tuning.</p>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-title">Computational Design of Probiotic Therapeutics</span>
+                    <span class="item-date">Nov 2025 – Present</span>
+                </div>
+                <p class="item-subtitle">iGEM Competition 2026</p>
+                <p class="item-description">Developed ML pipeline using weighted Bee Colony Optimization algorithm for Alzheimer's biomarker identification. Implemented OPENFOAM and GROMACS molecular dynamics simulations. Developing stochastic systems biology models combining Gillespie simulation and Monte Carlo sensitivity analysis.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Publications</h2>
+            <ul class="publications-list">
+                <li>C. Jerin Mahibha, Wordson Robert, Gersome Shimi, Durairaj Thenmozhi, "Transformer-Driven Word-Level Classification of Dravidian Languages."</li>
+                <li>C. Jerin Mahibha, Wordson Robert, "A Semantic Retrieval Framework with Sarcasm Filtering" – under review.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-label">Languages</div>
+                <div class="skill-value">Python (NumPy, Pandas, PyTorch, scikit-learn, Matplotlib, NLTK, HuggingFace), MATLAB, Java</div>
+                
+                <div class="skill-label">Tools & Libraries</div>
+                <div class="skill-value">Git, HTML, LaTeX, NumPy/SciPy, PyTorch, FAISS, OPENFOAM, GROMACS</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Extracurricular Activities</h2>
+            <div class="extracurricular">
+                <div class="extra-label">Cricket</div>
+                <div class="extra-value">Represented IISER Kolkata Cricket Team at SPARTA Sports Meet 2025 (AIIMS Kalyani). Convenor of the IISER Kolkata Cricket Club (IKCC).</div>
+                
+                <div class="extra-label">Publications</div>
+                <div class="extra-value">Co-founded and contribute to THE GROUP CHAT magazine. Designed and maintain the publication's website.</div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

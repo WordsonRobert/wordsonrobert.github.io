@@ -1,0 +1,239 @@
+import * as THREE from 'three';
+import { FBXLoader } from 'three/addons/loaders/FBXLoader.js'; 
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+import * as SkeletonUtils from 'three/addons/utils/SkeletonUtils.js';
+
+// === SCENE & CAMERA ===
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x0a0a0c, 0.05); 
+
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 1.8, 12); // Deep in the pit
+
+const controls = new PointerLockControls(camera, document.body);
+controls.pointerSpeed = 0.25; 
+
+const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+// Intense Bloom for the lights
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 3.0, 1.0, 0.1));
+
+// === ENVIRONMENT ===
+const groundGeo = new THREE.PlaneGeometry(200, 200, 100, 100);
+const pos = groundGeo.attributes.position;
+for(let i=0; i<pos.count; i++) { pos.setZ(i, (Math.random() - 0.5) * 1.5); } // Rough mud
+groundGeo.computeVertexNormals();
+const ground = new THREE.Mesh(groundGeo, new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 1.0 }));
+ground.rotation.x = -Math.PI / 2; scene.add(ground);
+
+const blackMat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.9 });
+const metalMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.8, roughness: 0.4 });
+
+// Main Stage & Barricade
+scene.add(new THREE.Mesh(new THREE.BoxGeometry(80, 3, 30), blackMat).position.set(0, 1.5, -5));
+scene.add(new THREE.Mesh(new THREE.BoxGeometry(60, 1.5, 0.5), metalMat).position.set(0, 0.75, 9));
+
+// 2-Story Scaffolding
+const scaffoldGroup = new THREE.Group();
+const pillarGeo = new THREE.BoxGeometry(0.5, 20, 0.5);
+const beamGeo = new THREE.BoxGeometry(60, 0.5, 10);
+for(let x = -30; x <= 30; x += 15) {
+    for(let z = -5; z <= 5; z += 10) {
+        const pillar = new THREE.Mesh(pillarGeo, metalMat); pillar.position.set(x, 10, z); scaffoldGroup.add(pillar);
+    }
+}
+scaffoldGroup.add(new THREE.Mesh(beamGeo, metalMat).position.set(0, 10, 0));
+scaffoldGroup.add(new THREE.Mesh(beamGeo, metalMat).position.set(0, 20, 0));
+scaffoldGroup.position.set(0, 3, -15); scene.add(scaffoldGroup);
+
+// White Van
+const van = new THREE.Mesh(new THREE.BoxGeometry(8, 6, 16), new THREE.MeshStandardMaterial({ color: 0xdddddd }));
+van.position.set(25, 6, -5); scene.add(van);
+
+// === THE CROWD (PHONE FLASHLIGHTS) ===
+const phoneGeo = new THREE.BufferGeometry();
+const phoneCount = 400; // More phones
+const phonePositions = new Float32Array(phoneCount * 3);
+for(let i = 0; i < phoneCount * 3; i+=3) {
+    phonePositions[i] = (Math.random() - 0.5) * 150; 
+    phonePositions[i+1] = 1.5 + Math.random() * 2;   
+    phonePositions[i+2] = 15 + Math.random() * 80;   
+}
+phoneGeo.setAttribute('position', new THREE.BufferAttribute(phonePositions, 3));
+const phoneMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.25, transparent: true, opacity: 0.9 });
+const phones = new THREE.Points(phoneGeo, phoneMat);
+scene.add(phones);
+
+// === LIGHTING & FX ===
+scene.add(new THREE.AmbientLight(0x050505, 1.0));
+
+// Carti God Ray
+const cartiSpotlight = new THREE.SpotLight(0xffffff, 3000, 100, 0.3, 1.0, 1.0);
+cartiSpotlight.position.set(0, 35, -5); 
+cartiSpotlight.target.position.set(0, 23, -15); 
+scene.add(cartiSpotlight); scene.add(cartiSpotlight.target);
+
+// 4 Sweeping Blue Lasers
+const lasers = [];
+for(let i=0; i<4; i++) {
+    const laser = new THREE.SpotLight(0x0044ff, 8000, 150, 0.02, 0.1, 1.0);
+    laser.position.set(-20 + (i*13.3), 5, -5);
+    scene.add(laser); scene.add(laser.target); lasers.push(laser);
+}
+
+// Giant Pyro bursts
+const pyros = [
+    new THREE.PointLight(0xff3300, 0, 70),
+    new THREE.PointLight(0xff3300, 0, 70),
+    new THREE.PointLight(0xff3300, 0, 70)
+];
+pyros[0].position.set(-15, 6, 0); pyros[1].position.set(15, 6, 0); pyros[2].position.set(0, 6, 0);
+pyros.forEach(p => scene.add(p));
+
+// Red Strobe Light for the drop
+const strobeLight = new THREE.PointLight(0xff0000, 0, 100);
+strobeLight.position.set(0, 15, 5);
+scene.add(strobeLight);
+
+// === FBX ASSET LOADER (WITH LOADING MANAGER) ===
+const mixers = [];
+const charMat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.9 });
+
+const manager = new THREE.LoadingManager();
+const loadingText = document.getElementById('loading-text');
+manager.onProgress = function (url, itemsLoaded, itemsTotal) {
+    loadingText.innerText = `Loading Assets: Math.round((itemsLoaded / itemsTotal) * 100)%`;
+};
+manager.onLoad = function () {
+    document.getElementById('loading-ui').style.display = 'none';
+    document.getElementById('enter-ui').style.display = 'flex';
+};
+
+const fbxLoader = new FBXLoader(manager); 
+
+function setupModel(fbx, position, rotation, scale = 0.015, isBloody = false) {
+    fbx.scale.set(scale, scale, scale); // 0.015 fixes Mixamo giant sizing
+    fbx.position.copy(position);
+    fbx.rotation.set(rotation.x, rotation.y, rotation.z);
+    
+    const mat = isBloody ? new THREE.MeshStandardMaterial({ color: 0x330000, roughness: 0.3 }) : charMat;
+    fbx.traverse((c) => { if (c.isMesh) { c.material = mat; } });
+    
+    if (fbx.animations.length > 0) {
+        const mixer = new THREE.AnimationMixer(fbx);
+        mixer.clipAction(fbx.animations[0]).play();
+        mixers.push(mixer);
+    }
+    scene.add(fbx);
+    return fbx;
+}
+
+// 1. Carti (Top Scaffold)
+fbxLoader.load('./character.fbx', (fbx) => setupModel(fbx, new THREE.Vector3(0, 23, -15), new THREE.Vector3(0, 0, 0)));
+
+// 2. Goon Pacing (Stage Floor)
+fbxLoader.load('./Entry.fbx', (fbx) => setupModel(fbx, new THREE.Vector3(-10, 3, -5), new THREE.Vector3(0, Math.PI/2, 0)));
+
+// 3. Mutant Flexing (On top of the White Van)
+fbxLoader.load('./Mutant Flexing Muscles.fbx', (fbx) => setupModel(fbx, new THREE.Vector3(25, 9, -5), new THREE.Vector3(0, -Math.PI/4, 0)));
+
+// 4. Sitting Dodging (Edge of the stage in front of you)
+fbxLoader.load('./Sitting Dodges.fbx', (fbx) => setupModel(fbx, new THREE.Vector3(5, 3, 5), new THREE.Vector3(0, Math.PI, 0)));
+
+// 5. Situp to Idle (Left side of stage)
+fbxLoader.load('./Situp To Idle.fbx', (fbx) => setupModel(fbx, new THREE.Vector3(-20, 3, 2), new THREE.Vector3(0, Math.PI/4, 0)));
+
+// 6. THE CIRCLE PIT (Zombies surrounding the camera)
+fbxLoader.load('./Zombie Attack.fbx', (fbx) => {
+    for(let i=0; i<6; i++) {
+        const clone = SkeletonUtils.clone(fbx);
+        clone.scale.set(0.015, 0.015, 0.015);
+        const angle = (i / 6) * Math.PI * 2;
+        const radius = 3.5; // How close they are to you
+        clone.position.set(Math.cos(angle) * radius, 0, 12 + Math.sin(angle) * radius);
+        clone.lookAt(0, 0, 12); // Facing inward at you
+        
+        const bloodyMat = new THREE.MeshStandardMaterial({ color: 0x220505, roughness: 0.3 });
+        clone.traverse((c) => { if (c.isMesh) c.material = bloodyMat; });
+        
+        if (clone.animations.length > 0) {
+            const mixer = new THREE.AnimationMixer(clone);
+            mixer.clipAction(clone.animations[0]).play();
+            mixer.timeScale = 0.8 + Math.random() * 0.5; // Randomize animation speed
+            mixers.push(mixer);
+        }
+        scene.add(clone);
+    }
+});
+
+// === UI & CONTROLS ===
+const enterUI = document.getElementById('enter-ui');
+enterUI.addEventListener('click', () => { controls.lock(); });
+controls.addEventListener('lock', () => { enterUI.style.display = 'none'; });
+controls.addEventListener('unlock', () => { enterUI.style.display = 'flex'; });
+
+// === ANIMATION LOOP ===
+const clock = new THREE.Clock();
+let time = 0;
+
+function animate() {
+    requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    time += delta;
+    mixers.forEach(m => m.update(delta));
+
+    // Phones bouncing to the beat
+    const positions = phoneGeo.attributes.position.array;
+    for(let i=1; i<positions.length; i+=3) {
+        positions[i] += Math.sin(time * 3 + i) * 0.015; 
+    }
+    phoneGeo.attributes.position.needsUpdate = true;
+
+    // Erratic sweeping lasers
+    lasers.forEach((laser, index) => {
+        laser.target.position.x = Math.sin(time * 2.5 + index) * 50;
+        laser.target.position.z = 20 + Math.cos(time * 1.8 + index) * 20;
+        laser.target.position.y = 2 + Math.sin(time * 4) * 5;
+    });
+
+    // Peak Chaos: Explosive Pyro, Strobe, and Camera Shake
+    if (time % 3 < 0.25) {
+        // Fire bursts
+        pyros.forEach(p => p.intensity = 5000);
+        strobeLight.intensity = (Math.random() > 0.5) ? 4000 : 0; // Flashing red
+        scene.fog.color.setHex(0x330000); // Fog turns blood red
+        
+        // Aggressive Camera Shake
+        if (controls.isLocked) {
+            camera.position.x = (Math.random() - 0.5) * 0.3;
+            camera.position.y = 1.8 + (Math.random() - 0.5) * 0.3;
+            camera.rotation.z = (Math.random() - 0.5) * 0.08;
+        }
+    } else {
+        // Cool down
+        pyros.forEach(p => p.intensity = THREE.MathUtils.lerp(p.intensity, 0, 0.1));
+        strobeLight.intensity = 0;
+        scene.fog.color.lerp(new THREE.Color(0x0a0a0c), 0.05); // Fade back to dark
+        
+        if (controls.isLocked) {
+            camera.position.x = THREE.MathUtils.lerp(camera.position.x, 0, 0.1);
+            camera.position.y = THREE.MathUtils.lerp(camera.position.y, 1.8, 0.1);
+            camera.rotation.z = THREE.MathUtils.lerp(camera.rotation.z, 0, 0.1);
+        }
+    }
+
+    composer.render();
+}
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight); composer.setSize(window.innerWidth, window.innerHeight);
+});
+animate();
